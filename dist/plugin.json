@@ -1,0 +1,93 @@
+{
+  "dependencies": {
+    "plugin_api_version": 4,
+    "use_jquery": true
+  },
+  "human": "chat-ai-support",
+  "meta_data": {
+    "categories": {
+      "0": "general",
+      "1": "productivity"
+    },
+    "data_tracked": null,
+    "data_tracked_description": null,
+    "description": "Plugin de chat de soporte con IA integrado para asistir a usuarios con documentos y consultas",
+    "image": null,
+    "license": null,
+    "link": null,
+    "name": "chat-ai-support",
+    "plugin_instructions": "1. Agrega el elemento Chat AI Support a tu pagina\n2. Configura los documentos que la IA debe procesar\n3. Personaliza la interfaz segun tu marca\n4. La IA estara lista para ayudar a tus usuarios!"
+  },
+  "plugin_elements": {
+    "ABC": {
+      "add_is_visible": true,
+      "can_fit_height": true,
+      "can_fit_width": true,
+      "category": "general",
+      "code": {
+        "initialize": {
+          "fn": "function(instance, properties, context) {\n  // Generate unique ID for this instance\n  instance.data.id = Date.now() + Math.random().toString(36).substr(2, 9);\n  \n  // HTML Structure for Chat AI Support\n  var html = '<div class=\"chat-ai-support-container\">' +\n    '<div class=\"chat-container\">' +\n      '<div class=\"chat-header\">' +\n        '<div class=\"chat-title\">' +\n          '<span class=\"status-indicator\"></span>' +\n          'Asistente IA' +\n          '<span class=\"token-counter\" id=\"tokenCounter-' + instance.data.id + '\">0 tokens</span>' +\n        '</div>' +\n        '<div class=\"chat-controls\">' +\n          '<button class=\"btn-minimize\" title=\"Minimizar\">−</button>' +\n          '<button class=\"btn-close\" title=\"Cerrar\">×</button>' +\n        '</div>' +\n      '</div>' +\n      '<div class=\"chat-messages\" id=\"chatMessages-' + instance.data.id + '\"></div>' +\n      '<div class=\"chat-input-container\">' +\n        '<div class=\"input-wrapper\">' +\n          '<textarea id=\"chatInput-' + instance.data.id + '\" class=\"chat-input\" placeholder=\"Escribe tu mensaje aquí...\" rows=\"1\" maxlength=\"500\"></textarea>' +\n          '<button id=\"sendButton-' + instance.data.id + '\" class=\"send-button\" title=\"Enviar\">' +\n            '<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\">' +\n              '<path d=\"M2.01 21L23 12 2.01 3 2 10l15 2-15 2z\"/>' +\n            '</svg>' +\n          '</button>' +\n        '</div>' +\n        '<div class=\"input-footer\">' +\n          '<div class=\"char-counter\"><span id=\"charCount-' + instance.data.id + '\">0</span>/500</div>' +\n          '<div class=\"upload-documents\">' +\n            '<button id=\"uploadBtn-' + instance.data.id + '\" class=\"upload-button\" title=\"Subir documento\">📎 Documentos</button>' +\n            '<input type=\"file\" id=\"fileInput-' + instance.data.id + '\" accept=\".txt,.pdf,.docx,.md\" multiple style=\"display: none;\">' +\n          '</div>' +\n        '</div>' +\n      '</div>' +\n    '</div>' +\n    '<div class=\"document-panel\" id=\"documentPanel-' + instance.data.id + '\">' +\n      '<div class=\"panel-header\">' +\n        '<h3>📚 Documentos Cargados</h3>' +\n        '<button id=\"togglePanel-' + instance.data.id + '\" class=\"toggle-button\">⌄</button>' +\n      '</div>' +\n      '<div class=\"panel-content\">' +\n        '<div class=\"document-list\" id=\"documentList-' + instance.data.id + '\">' +\n          '<div class=\"empty-state\">' +\n            '<p>No hay documentos cargados.</p>' +\n            '<p>Sube documentos para que la IA pueda ayudarte mejor.</p>' +\n          '</div>' +\n        '</div>' +\n      '</div>' +\n    '</div>' +\n    '<div class=\"toast-container\" id=\"toastContainer-' + instance.data.id + '\"></div>' +\n  '</div>';\n  \n  // Set theme color CSS variable if provided\n  if (properties.theme_color) {\n    instance.canvas.css('--theme-color', properties.theme_color);\n  }\n  \n  // Insert HTML\n  instance.canvas.html(html);\n  \n  // Initialize ChatAI class\n  instance.data.chatAI = new BubbleChatAI(instance, properties);\n  \n  console.log('Chat AI Support initialized with ID:', instance.data.id);\n}"
+        },
+        "preview": {
+          "fn": "function(instance, properties, context) {\n  var html = '<div class=\"chat-ai-support-container\">' +\n    '<div class=\"chat-container\">' +\n      '<div class=\"chat-header\">' +\n        '<div class=\"chat-title\">' +\n          '<span class=\"status-indicator\"></span>' +\n          'Asistente IA - Preview' +\n          '<span class=\"token-counter\">0 tokens</span>' +\n        '</div>' +\n        '<div class=\"chat-controls\">' +\n          '<button class=\"btn-minimize\">−</button>' +\n          '<button class=\"btn-close\">×</button>' +\n        '</div>' +\n      '</div>' +\n      '<div class=\"chat-messages\">' +\n        '<div class=\"message ai-message\">' +\n          '<div class=\"message-avatar\">🤖</div>' +\n          '<div class=\"message-content\">' +\n            '<div class=\"message-text\">¡Hola! Soy tu asistente IA. En el editor de Bubble, configura tu API key de OpenAI para comenzar.</div>' +\n            '<div class=\"message-time\">Ahora</div>' +\n          '</div>' +\n        '</div>' +\n      '</div>' +\n      '<div class=\"chat-input-container\">' +\n        '<div class=\"input-wrapper\">' +\n          '<textarea class=\"chat-input\" placeholder=\"Escribe tu mensaje aquí...\" disabled></textarea>' +\n          '<button class=\"send-button\" disabled>' +\n            '<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\">' +\n              '<path d=\"M2.01 21L23 12 2.01 3 2 10l15 2-15 2z\"/>' +\n            '</svg>' +\n          '</button>' +\n        '</div>' +\n        '<div class=\"input-footer\">' +\n          '<div class=\"char-counter\">0/500</div>' +\n          '<div class=\"upload-documents\">' +\n            '<button class=\"upload-button\" disabled>📎 Documentos</button>' +\n          '</div>' +\n        '</div>' +\n      '</div>' +\n    '</div>' +\n  '</div>';\n  \n  if (properties.theme_color) {\n    instance.canvas.css('--theme-color', properties.theme_color);\n  }\n  \n  instance.canvas.html(html);\n}"
+        },
+        "reset": {
+          "fn": "function(instance, properties, context) {\n  console.log('Resetting Chat AI Support');\n  if (instance.data.chatAI) {\n    instance.data.chatAI.destroy();\n    delete instance.data.chatAI;\n  }\n  instance.data = {};\n  instance.canvas.empty();\n}"
+        },
+        "update": {
+          "fn": "function(instance, properties, context) {\n  console.log('Updating Chat AI Support');\n  if (instance.data.chatAI) {\n    instance.data.chatAI.updateProperties(properties);\n  }\n  \n  // Update theme color if changed\n  if (properties.theme_color) {\n    instance.canvas.css('--theme-color', properties.theme_color);\n  }\n}"
+        }
+      },
+      "default_dim": {
+        "height": 500,
+        "width": 400
+      },
+      "display": "Chat AI Support",
+      "fields": {
+        "openai_api_key": {
+          "caption": "OpenAI API Key",
+          "doc": "Tu clave de API de OpenAI para el chat con IA",
+          "editor": "DynamicValue",
+          "name": "openai_api_key",
+          "optional": false,
+          "rank": 0,
+          "value": "text"
+        },
+        "max_tokens": {
+          "caption": "Max Tokens por consulta",
+          "doc": "Límite máximo de tokens por consulta (por defecto: 500)",
+          "editor": "DynamicValue",
+          "name": "max_tokens",
+          "optional": true,
+          "rank": 1,
+          "value": "number"
+        },
+        "welcome_message": {
+          "caption": "Mensaje de bienvenida",
+          "doc": "Mensaje inicial que mostrará el asistente IA",
+          "editor": "DynamicValue",
+          "name": "welcome_message",
+          "optional": true,
+          "rank": 2,
+          "value": "text"
+        },
+        "theme_color": {
+          "caption": "Color del tema",
+          "doc": "Color principal para la interfaz del chat",
+          "editor": "DynamicValue",
+          "name": "theme_color",
+          "optional": true,
+          "rank": 3,
+          "value": "text"
+        }
+      },
+      "icon": "ion-chatbubble-working",
+      "property_applications": {
+        "Background": true,
+        "Border": true,
+        "Font": true,
+        "Padding": true
+      }
+    }
+  }
+}
