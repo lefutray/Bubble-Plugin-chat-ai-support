@@ -1,3 +1,9 @@
 {
-    "name": "chat-ai-support"
+    "categories": {
+        "0": "general",
+        "1": "productivity"
+    },
+    "description": "Plugin de chat de soporte con IA integrado para asistir a usuarios con documentos y consultas",
+    "name": "chat-ai-support",
+    "plugin_instructions": "1. Agrega el elemento Chat AI Support a tu pagina\n2. Configura los documentos que la IA debe procesar\n3. Personaliza la interfaz segun tu marca\n4. La IA estara lista para ayudar a tus usuarios!"
 }

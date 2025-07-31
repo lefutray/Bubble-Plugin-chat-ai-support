@@ -1,0 +1,29 @@
+{
+    "add_is_visible": true,
+    "can_fit_height": true,
+    "can_fit_width": true,
+    "category": "general",
+    "default_dim": {
+        "height": 100,
+        "width": 300
+    },
+    "display": "Hola Mundo",
+    "fields": {
+        "mensaje_personalizado": {
+            "caption": "Mensaje personalizado",
+            "doc": "Texto personalizado para mostrar en el elemento",
+            "editor": "DynamicValue",
+            "name": "mensaje_personalizado",
+            "optional": true,
+            "rank": 0,
+            "value": "text"
+        }
+    },
+    "icon": "ion-heart",
+    "property_applications": {
+        "Background": true,
+        "Border": true,
+        "Font": true,
+        "Padding": true
+    }
+}
