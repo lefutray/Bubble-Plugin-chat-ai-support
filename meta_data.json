@@ -1,7 +1,8 @@
 {
     "categories": {
         "0": "general",
-        "1": "productivity"
+        "1": "productivity",
+        "2": "artificial intelligence (AI)"
     },
     "description": "Plugin de chat de soporte con IA integrado para asistir a usuarios con documentos y consultas",
     "name": "chat-ai-support",
